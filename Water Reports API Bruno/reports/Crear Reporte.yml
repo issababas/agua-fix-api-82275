@@ -10,9 +10,9 @@ http:
     type: json
     data: |-
       {
-        "address": "Blvd. Campestre #250, León, Guanajuato",
-        "description": "Hay una fuga considerable de agua en la vía pública.",
-        "severity": "high",
+        "address": "Calle falsa",
+        "description": "Fuga",
+        "severity": "super-high",
         "reporterPhone": "4771234567"
       }
   auth: inherit
