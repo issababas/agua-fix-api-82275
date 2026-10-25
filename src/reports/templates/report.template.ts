@@ -1,8 +1,57 @@
 import { CreateReportDto } from '../dto/create-report.dto';
 
+/**
+ * Escapa los caracteres especiales HTML para evitar inyección.
+ */
+function escHtml(raw: string): string {
+  return raw
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/**
+ * Valida que una URL sea segura para incluir en un atributo src.
+ * Solo acepta http:// o https://, nunca credenciales embebidas.
+ */
+function safeImgSrc(url: string): string | null {
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+      return null;
+    }
+    // Rechazar URLs con credenciales (user:pass@host)
+    if (parsed.username || parsed.password) {
+      return null;
+    }
+    return url;
+  } catch {
+    return null;
+  }
+}
+
 export const generateReportTemplate = (
   dto: CreateReportDto,
+  photoUrl?: string,
 ): string => {
+  const safeSrc = photoUrl ? safeImgSrc(photoUrl) : null;
+
+  const photoSection = safeSrc
+    ? `
+          <div style="margin-top: 20px; text-align: center;">
+            <img
+              src="${safeSrc}"
+              alt="Fotografía de la fuga"
+              style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;"
+            />
+            <p style="color: #6b7280; font-size: 13px; margin-top: 8px;">
+              Fotografía adjunta al reporte
+            </p>
+          </div>`
+    : '';
+
   return `
     <!DOCTYPE html>
     <html lang="es">
@@ -56,7 +105,7 @@ export const generateReportTemplate = (
                 padding: 10px;
                 border-bottom: 1px solid #ddd;
               ">
-                ${dto.address}
+                ${escHtml(dto.address)}
               </td>
             </tr>
 
@@ -73,7 +122,7 @@ export const generateReportTemplate = (
                 padding: 10px;
                 border-bottom: 1px solid #ddd;
               ">
-                ${dto.description}
+                ${escHtml(dto.description)}
               </td>
             </tr>
 
@@ -90,7 +139,7 @@ export const generateReportTemplate = (
                 padding: 10px;
                 border-bottom: 1px solid #ddd;
               ">
-                ${dto.severity}
+                ${escHtml(dto.severity)}
               </td>
             </tr>
 
@@ -105,11 +154,13 @@ export const generateReportTemplate = (
               <td style="
                 padding: 10px;
               ">
-                ${dto.reporterPhone}
+                ${escHtml(dto.reporterPhone)}
               </td>
             </tr>
 
           </table>
+
+          ${photoSection}
 
           <p style="
             margin-top: 30px;
@@ -124,4 +175,4 @@ export const generateReportTemplate = (
       </body>
     </html>
   `;
-};
+};

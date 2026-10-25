@@ -7,11 +7,13 @@ import { ReportsService } from './reports.service';
 import { ReportsRepository } from './reports.repository';
 
 import { EmailModule } from '../email/email.module';
+import { StorageModule } from '../storage/storage.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Report]),
     EmailModule,
+    StorageModule,
   ],
 
   controllers: [

@@ -7,14 +7,24 @@ http:
   method: POST
   url: http://localhost:3000/reports
   body:
-    type: json
-    data: |-
-      {
-        "address": "Calle falsa",
-        "description": "Fuga",
-        "severity": "super-high",
-        "reporterPhone": "4771234567"
-      }
+    type: multipartForm
+    params:
+      - name: address
+        value: "Calle Falsa 123, Guanajuato"
+        enabled: true
+      - name: description
+        value: "Fuga de agua visible en la banqueta, flujo constante"
+        enabled: true
+      - name: severity
+        value: "high"
+        enabled: true
+      - name: reporterPhone
+        value: "4771234567"
+        enabled: true
+      - name: photo
+        value: ""
+        type: file
+        enabled: true
   auth: inherit
 
 settings:
@@ -23,3 +33,10 @@ settings:
   followRedirects: true
   maxRedirects: 5
   forwardAuthorizationHeader: false
+
+# INSTRUCCIONES BRUNO:
+# 1. Abre este request en Bruno.
+# 2. En el campo "photo" (tipo file), selecciona un archivo JPEG, PNG o WebP (max 5 MB).
+# 3. Envía el request.
+# Respuesta esperada 201: { id, address, description, severity, reporterPhone, photoUrl, repairPhotoUrl, isResolved, createdAt }
+# Respuesta esperada 400: si falta la foto o el MIME no es válido.

@@ -3,6 +3,10 @@
 /node_modules
 /build
 
+# TypeScript incremental build cache
+*.tsbuildinfo
+
+
 # Logs
 logs
 *.log

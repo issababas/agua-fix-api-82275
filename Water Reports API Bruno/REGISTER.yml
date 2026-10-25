@@ -12,7 +12,7 @@ http:
       {
         "name": "Gonzalo Garcia",
         "email": "gonzalogarvall@gmail.com",
-        "password": "teamoissa"
+        "password": "TU_CONTRASEÑA_AQUI"
       }
   auth: inherit
 

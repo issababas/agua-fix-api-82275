@@ -1,7 +1,10 @@
 import 'dotenv/config';
+import { join } from 'path';
 import { DataSource } from 'typeorm';
 import { envs } from '../config/envs';
 
+// __dirname apunta a src/database/ (ts-node) o a dist/database/ (node)
+// Ambas rutas resuelven correctamente con este patrón.
 export const AppDataSource = new DataSource({
   type: 'postgres',
 
@@ -12,12 +15,12 @@ export const AppDataSource = new DataSource({
   database: envs.dbName,
 
   entities: [
-    'src/**/*.entity.ts',
+    join(__dirname, '..', '**', '*.entity.{ts,js}'),
   ],
 
   migrations: [
-    'src/database/migrations/*.ts',
+    join(__dirname, 'migrations', '*.{ts,js}'),
   ],
 
   synchronize: false,
-});
+});

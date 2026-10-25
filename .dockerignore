@@ -1,0 +1,39 @@
+# Archivos/directorios excluidos del contexto del Docker build
+# Nunca deben llegar a la imagen ni al daemon de Docker.
+
+# Secretos y configuración de entorno — NUNCA en la imagen
+.env
+.env.*
+compose.yaml
+compose.yml
+docker-compose.yaml
+docker-compose.yml
+
+# Directorios grandes que se generan durante el build o en runtime
+node_modules
+dist
+.git
+.gitignore
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# Logs y cobertura
+logs
+*.log
+coverage
+.nyc_output
+
+# IDEs y editores
+.idea
+.vscode
+.DS_Store
+
+# Colección Bruno (solo pruebas locales)
+Water Reports API Bruno
+
+# Tests (no son necesarios en la imagen de producción)
+test
+
+# README y documentación
+README.md

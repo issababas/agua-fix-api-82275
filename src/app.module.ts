@@ -1,11 +1,16 @@
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { envs } from './config/envs';
+
 import { ReportsModule } from './reports/reports.module';
 import { AuthModule } from './auth/auth.module';
 import { EmailModule } from './email/email.module';
 import { UsersModule } from './users/users.module';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
@@ -24,6 +29,9 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     EmailModule,
     UsersModule,
+    StorageModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -1,0 +1,32 @@
+info:
+  name: Resolver Reporte
+  type: http
+  seq: 3
+
+http:
+  method: PATCH
+  url: http://localhost:3000/reports/1/resolve
+  body:
+    type: multipartForm
+    params:
+      - name: photo
+        value: ""
+        type: file
+        enabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+
+# INSTRUCCIONES BRUNO:
+# 1. Cambia el "1" en la URL por el id real del reporte a resolver.
+# 2. En el campo "photo" (tipo file), selecciona la foto del trabajo terminado (JPEG/PNG/WebP, max 5 MB).
+# 3. Envía el request.
+# Respuesta esperada 200: reporte con isResolved: true y repairPhotoUrl relleno.
+# Respuesta esperada 404: si el id no existe.
+# Respuesta esperada 409: si el reporte ya estaba resuelto.
+# Respuesta esperada 400: si falta la foto.

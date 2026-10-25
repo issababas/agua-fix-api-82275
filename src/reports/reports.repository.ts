@@ -24,4 +24,12 @@ export class ReportsRepository {
       },
     });
   }
-}
+
+  async findById(id: number): Promise<Report | null> {
+    return await this.repository.findOne({ where: { id } });
+  }
+
+  async save(report: Report): Promise<Report> {
+    return await this.repository.save(report);
+  }
+}

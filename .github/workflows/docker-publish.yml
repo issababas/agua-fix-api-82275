@@ -1,0 +1,48 @@
+name: Build & Publish Docker image
+
+# Se activa en cada push a la rama main
+on:
+  push:
+    branches:
+      - main
+
+# Permisos mínimos: solo lectura del repositorio
+permissions:
+  contents: read
+
+jobs:
+  docker:
+    name: Build and push to Docker Hub
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout del repositorio
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Configurar Docker Buildx (builds multiplataforma y caché de capas)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 3. Login en Docker Hub con los secrets configurados en el repositorio
+      #    Secrets requeridos en GitHub → Settings → Secrets and variables → Actions:
+      #      - DOCKER_USER     → tu nombre de usuario en Docker Hub
+      #      - DOCKER_PASSWORD → tu contraseña o token de acceso de Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 4. Construir y publicar la imagen
+      #    Tag: <DOCKER_USER>/agua-fix-api:latest
+      #    El build falla si hay errores en el Dockerfile o en la compilación.
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USER }}/agua-fix-api:latest
+          # Caché de capas mediante GitHub Actions cache
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

@@ -22,9 +22,15 @@ export class Report {
   @Column()
   reporterPhone: string;
 
+  @Column({ nullable: true, type: 'varchar' })
+  photoUrl: string | null;
+
+  @Column({ nullable: true, type: 'varchar' })
+  repairPhotoUrl: string | null;
+
   @Column({ default: false })
   isResolved: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
-}
+}
