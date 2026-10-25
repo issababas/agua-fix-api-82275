@@ -28,6 +28,15 @@ jobs:
       #    Secrets requeridos en GitHub → Settings → Secrets and variables → Actions:
       #      - DOCKER_USER     → tu nombre de usuario en Docker Hub
       #      - DOCKER_PASSWORD → tu contraseña o token de acceso de Docker Hub
+      - name: Validate Docker Hub username
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        run: |
+          if [ -z "$DOCKER_USER" ]; then
+            echo "Error: el secreto DOCKER_USER está vacío o no está disponible."
+            exit 1
+          fi
+          echo "El secreto DOCKER_USER está configurado."
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
